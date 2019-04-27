@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-md-9">
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+      <mat-step>
+        <ng-template matStepLabel>Delivery Address</ng-template>
+        <app-all-address [addressModel]="addressModel" (addAddress)="addAddress($event)"
+          (editAddress)="editAddress($event)" (deleteAddress)="deleteData($event)"
+          (selectAddress)="selectedAddress($event)"></app-all-address>
+
+        <button [disabled]="addressModel?.length === 0" class="addButton float-right" matStepperNext>CONTINUE</button>
+
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Order Summary</ng-template>
+        <app-checkout-cart [shopModel]="shopModel" (addPlus)="actionPlus($event)" (minusPlus)="actionMinus($event)"
+          (deleteCart)="removeCart($event)"></app-checkout-cart>
+        <button class="backButton float-left" matStepperPrevious>Back</button>
+        <button [disabled]="addressModel?.length === 0" class="addButton float-right" matStepperNext>CONTINUE</button>
+
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Confirm</ng-template>
+
+        <div>
+          <!--     <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset()">Reset</button> -->
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+  <div class="col-md-3">
+    <div class="row" *ngIf="addressSelected">
+      <div class="col-md-12 mt-5 mb-3 gridPrice">
+        <div class="line mb-1">
+          <p><strong>Delivery Address</strong></p>
+          <div><b>{{addressSelected.name}}</b></div>
+          <div>{{addressSelected.building }}</div>
+          <div>{{addressSelected.streetAddress }}</div>
+          <div>{{addressSelected.landmark }}</div>
+          <div>{{addressSelected.city }}</div>
+          <div>{{addressSelected.state }}</div>
+          <div><span>Mobile: </span>{{addressSelected.mobileNumber }}</div>
+          <div class="float-right">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 pb-2 gridPrice">
+        <div class="line mb-1">
+          <p><strong>PRICE DETAILS</strong></p>
+          <span class="text-dark">Price: ({{totalItems}}items)</span>
+          <span class="text-muted float-right"> <span>&#x20B9;</span>{{subTotal}}</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="line mb-1">
+          <span class="fw-500">Total:</span>
+          <span class="text-muted float-right"><span>&#x20B9;</span>{{subTotal}}</span>
+        </div>
+        <div class="float-right"><span 
+          class="addToCartButton" type="button"
+            (click)="orderConfirmDetails(addressSelected, subTotal)">CONFIRM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
