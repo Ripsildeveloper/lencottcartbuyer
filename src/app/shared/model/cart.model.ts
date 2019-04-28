@@ -1,4 +1,4 @@
 export class Cart {
     userId: string;
-    skuDetail: [{skuCode: string , set: number, moq: number, productId: string}];
+    skuDetail: [ {productId: string, pack: number}];
 }

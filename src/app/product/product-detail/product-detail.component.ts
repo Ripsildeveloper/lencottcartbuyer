@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-  productModel: any;
+  productModel: Product;
   id;
   showRelatedProducts;
   action;
@@ -29,6 +29,8 @@ export class ProductDetailComponent implements OnInit {
   message;
   count = 0;
   noPrductAdd = false;
+  packSum = 0;
+  packCount = 1;
   constructor(public productService: ProductService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar) {
 
   }
@@ -40,6 +42,9 @@ export class ProductDetailComponent implements OnInit {
   viewSingleProduct() {
     this.productService.getSingleProducts(this.id).subscribe(data => {
       this.productModel = data;
+      this.productModel.size.map(element => {
+        this.packSum += +element.ratio *  this.productModel.moq;
+      });
       /* this.productModel.size.forEach(element => {
         element.setCount = 0;
       }); */
@@ -81,12 +86,13 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  skuProduct(productId, moq) {
+  skuProduct(productId, moq, packCount) {
     this.noPrductAdd = false;
+
     const userId = sessionStorage.getItem('userId');
     const item: any = this.productModel.size.filter(element => element);
-    if (JSON.parse(sessionStorage.getItem('login'))) {
-      this.addToCartServer(userId, item, productId, moq);
+    if ( moq <=  packCount && JSON.parse(sessionStorage.getItem('login')) ) {
+      this.addToCartServer(userId, item, productId, moq, packCount);
     } else {
       /*    this.addToCartLocal(item, productId, moq); */
       setTimeout(() => {
@@ -153,25 +159,28 @@ export class ProductDetailComponent implements OnInit {
       });
     }
   }
-  addToCartServer(userId, item, product, productMoq) {
+  addToCartServer(userId, item, product, productMoq, packCount) {
 
-    this.message = 'Product Added To Cart';
     const totalItem: any = [];
-    item.forEach(element => {
+    const cart = {
+      productId: product,
+      pack: packCount
+    };
+    totalItem.push(cart);
+    /* item.forEach(element => {
       const cart = {
         productId: product,
         skuCode: element.skuCode,
-        moq: productMoq,
-        set: element.setCount,
+        qty: productMoq * packCount * element.ratio
       };
       totalItem.push(cart);
-    });
+    }); */
     this.cartModel = new Cart();
     this.cartModel.userId = userId;
     this.cartModel.skuDetail = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
       this.shopModel = data;
-      this.total();
+      this.message = 'Product Added To Cart';
       this.snackBar.open(this.message, this.action, {
         duration: 3000,
       });
@@ -180,15 +189,17 @@ export class ProductDetailComponent implements OnInit {
       console.log(error);
     });
   }
-  actionPlus(skuCode) {
-    this.productModel.size.forEach(element => {
+  actionPlus(plus) {
+    this.packCount = ++plus;
+    /* this.productModel.size.forEach(element => {
       if (element.skuCode === skuCode) {
         element.setCount++;
       }
-    });
+    }); */
   }
-  actionMin(skuCode, setCount) {
-    if (setCount !== 0) {
+  actionMinus(minus) {
+    this.packCount = --minus;
+    /* if (setCount !== 0) {
       this.productModel.size.forEach(element => {
         if (element.skuCode === skuCode) {
           element.setCount--;
@@ -196,7 +207,7 @@ export class ProductDetailComponent implements OnInit {
       });
     } else {
 
-    }
+    } */
   }
   total() {
     let sum = 0;
