@@ -630,7 +630,7 @@ export class ProductListComponent implements OnInit {
     totalItem.push(item);
     this.cart = new Cart();
     this.cart.userId = userId;
-    this.cart.skuDetail = totalItem;
+    this.cart.items = totalItem;
     this.productService.addToCart(this.cart).subscribe(data => {
       this.cartModel = data;
       this.snackBar.open(this.message, this.action, {

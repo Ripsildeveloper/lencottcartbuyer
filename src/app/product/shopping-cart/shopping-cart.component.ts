@@ -76,38 +76,34 @@ export class ShoppingCartComponent implements OnInit {
       }
     }
   } */
-  actionPlus(product, productSkuCode, productMoq) {
+  actionPlus(product) {
+
     const totalItem: any = [];
     const cart = {
       productId: product,
-      skuCode: productSkuCode,
-      moq: productMoq,
-      set: 1
+      pack: 1
     };
     totalItem.push(cart);
     this.cartModel = new Cart();
     this.cartModel.userId = this.userId;
-    this.cartModel.skuDetail = totalItem;
+    this.cartModel.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
     this.shopModel = data;
-    this.total();
     }, error => {
       console.log(error);
     });
   }
-  actionMinus(product, productSkuCode, productMoq) {
+  actionMinus(product) {
     const cart: any = {
       productId: product,
-      skuCode: productSkuCode,
-      moq: productMoq,
-      set: 1
+      pack: 1
     };
     this.cartModel = new Cart();
     this.cartModel.userId = this.userId;
-    this.cartModel.skuDetail = cart;
+    this.cartModel.items = cart;
     this.productService.addToCartDecrement(this.cartModel).subscribe(data => {
-      this.shopModel = data;
-      this.total();
+    this.shopModel = data;
+    this.total();
     }, error => {
       console.log(error);
     });
@@ -145,7 +141,7 @@ export class ShoppingCartComponent implements OnInit {
     this.totalItems = 0;
     const totalProduct: any = this.shopModel.map(item => item.cart_product[0]);
     console.log(totalProduct);
-    const totalSet = this.shopModel.map(item => item.skuDetail);
+    const totalSet = this.shopModel.map(item => item.items);
     totalSet.map(item => {
       set += item.set;
       this.totalItems += item.set * item.moq;
@@ -157,7 +153,8 @@ export class ShoppingCartComponent implements OnInit {
   shoppingCartUser(userId) {
     this.productService.shoppingUser(userId).subscribe(data => {
     this.shopModel = data;
-    this.total();
+    /* console.log(this.shopModel); */
+    /* this.total(); */
     }, err => {
       console.log(err);
     });

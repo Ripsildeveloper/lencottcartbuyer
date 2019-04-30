@@ -69,7 +69,7 @@ export class PlaceOrderComponent implements OnInit {
   actionPlus(totalItem) {
     this.cartModel = new Cart();
     this.cartModel.userId = this.userId;
-    this.cartModel.skuDetail = totalItem;
+    this.cartModel.items = totalItem;
     this.accountService.addToCart(this.cartModel).subscribe(data => {
       this.shopModel = data;
       this.total();
@@ -80,7 +80,7 @@ export class PlaceOrderComponent implements OnInit {
   actionMinus(totalItem) {
     this.cartModel = new Cart();
     this.cartModel.userId = this.userId;
-    this.cartModel.skuDetail = totalItem;
+    this.cartModel.items = totalItem;
     this.accountService.addToCartDecrement(this.cartModel).subscribe(data => {
       this.shopModel = data;
       this.total();

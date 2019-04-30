@@ -86,18 +86,18 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  skuProduct(productId, moq, packCount) {
+  skuProduct(productId, moq, count, packSumTotal) {
     this.noPrductAdd = false;
-
     const userId = sessionStorage.getItem('userId');
-    const item: any = this.productModel.size.filter(element => element);
-    if ( moq <=  packCount && JSON.parse(sessionStorage.getItem('login')) ) {
-      this.addToCartServer(userId, item, productId, moq, packCount);
+    if (JSON.parse(sessionStorage.getItem('login'))) {
+      if (moq <=  count ) {
+        this.addToCartServer(userId, productId, count, packSumTotal );
+      } else {
+        setTimeout(() => {
+          this.noPrductAdd = true;
+        }, 100);
+      }
     } else {
-      /*    this.addToCartLocal(item, productId, moq); */
-      setTimeout(() => {
-        this.noPrductAdd = true;
-      }, 100);
     }
   }
   addToCartLocal(item, product, productMoq) {
@@ -159,55 +159,34 @@ export class ProductDetailComponent implements OnInit {
       });
     }
   }
-  addToCartServer(userId, item, product, productMoq, packCount) {
+  addToCartServer(userId, product, count, packSumTotal) {
 
     const totalItem: any = [];
     const cart = {
       productId: product,
-      pack: packCount
+      pack: count,
+      qty: packSumTotal * count
     };
     totalItem.push(cart);
-    /* item.forEach(element => {
-      const cart = {
-        productId: product,
-        skuCode: element.skuCode,
-        qty: productMoq * packCount * element.ratio
-      };
-      totalItem.push(cart);
-    }); */
     this.cartModel = new Cart();
     this.cartModel.userId = userId;
-    this.cartModel.skuDetail = totalItem;
+    this.cartModel.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
       this.shopModel = data;
       this.message = 'Product Added To Cart';
       this.snackBar.open(this.message, this.action, {
         duration: 3000,
       });
-      /* this.router.navigate(['product/shopping']); */
+      this.router.navigate(['product/shopping']);
     }, error => {
       console.log(error);
     });
   }
   actionPlus(plus) {
     this.packCount = ++plus;
-    /* this.productModel.size.forEach(element => {
-      if (element.skuCode === skuCode) {
-        element.setCount++;
-      }
-    }); */
   }
   actionMinus(minus) {
     this.packCount = --minus;
-    /* if (setCount !== 0) {
-      this.productModel.size.forEach(element => {
-        if (element.skuCode === skuCode) {
-          element.setCount--;
-        }
-      });
-    } else {
-
-    } */
   }
   total() {
     let sum = 0;

@@ -65,9 +65,9 @@ export class ProductService {
   }
 
   addToCart(cart): Observable<Cart> {
-    const cartUrl = 'cart/';
-    const url: string = this.serviceUrl + cartUrl  + cart.userId;
-    return this.httpClient.put<Cart>(url, cart);
+    const cartUrl = 'cart';
+    const url: string = this.serviceUrl + cartUrl;
+    return this.httpClient.post<Cart>(url, cart);
   }
 
   addToCartDecrement(cart): Observable<Cart> {

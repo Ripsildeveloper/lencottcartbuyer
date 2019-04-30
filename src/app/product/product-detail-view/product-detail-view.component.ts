@@ -86,7 +86,7 @@ this.details = true;
     totalItem.push(item);
     this.cart = new Cart();
     this.cart.userId = userId;
-    this.cart.skuDetail = totalItem;
+    this.cart.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
       this.cartModel = data;
       this.snackBar.open(this.message, this.action, {
