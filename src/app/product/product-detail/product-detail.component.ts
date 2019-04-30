@@ -43,7 +43,7 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getSingleProducts(this.id).subscribe(data => {
       this.productModel = data;
       this.productModel.size.map(element => {
-        this.packSum += +element.ratio *  this.productModel.moq;
+        this.packSum += +element.ratio * this.productModel.moq;
       });
       /* this.productModel.size.forEach(element => {
         element.setCount = 0;
@@ -86,12 +86,12 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  skuProduct(productId, moq, count, packSumTotal) {
+  skuProduct(productId, moq, count, packSumTotal, sizeData) {
     this.noPrductAdd = false;
     const userId = sessionStorage.getItem('userId');
     if (JSON.parse(sessionStorage.getItem('login'))) {
-      if (moq <=  count ) {
-        this.addToCartServer(userId, productId, count, packSumTotal );
+      if (count <= moq) {
+        this.addToCartServer(userId, productId, count, packSumTotal, sizeData);
       } else {
         setTimeout(() => {
           this.noPrductAdd = true;
@@ -105,7 +105,6 @@ export class ProductDetailComponent implements OnInit {
     const cartLocal = JSON.parse(sessionStorage.getItem('cart')) || [];
     if (cartLocal.length === 0) {
       const skuDetail: any = [];
-      // tslint:disable-next-line:variable-name
       item.forEach(element => {
         const cart = {
           productId: product,
@@ -125,9 +124,6 @@ export class ProductDetailComponent implements OnInit {
         duration: 3000,
       });
     } else {
-      /* const totalItem = cartLocal.find(ite => {
-        return ite.skuCode === product._id;
-      }); */
       const cartDetail: any = [];
       item.forEach(element => {
         const cart = {
@@ -141,7 +137,6 @@ export class ProductDetailComponent implements OnInit {
           cart_product: this.productModel,
         };
         cartDetail.push(finalCart);
-        /* cart_product.push(this.productModel); */
       });
       cartDetail.map(element => {
         if (cartLocal.find(s => s.skuCode === element.skuDetail.skuCode)) {
@@ -159,25 +154,23 @@ export class ProductDetailComponent implements OnInit {
       });
     }
   }
-  addToCartServer(userId, product, count, packSumTotal) {
-
+  addToCartServer(userId, product, count, packSumTotal, sizeData) {
     const totalItem: any = [];
     const cart = {
       productId: product,
       pack: count,
-      qty: packSumTotal * count
+      ratioQty: packSumTotal
     };
     totalItem.push(cart);
     this.cartModel = new Cart();
     this.cartModel.userId = userId;
     this.cartModel.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
-      this.shopModel = data;
-      this.message = 'Product Added To Cart';
-      this.snackBar.open(this.message, this.action, {
-        duration: 3000,
+    this.shopModel = data;
+    this.message = 'Product Added To Cart';
+    this.snackBar.open(this.message, this.action, {
+      duration: 3000,
       });
-      this.router.navigate(['product/shopping']);
     }, error => {
       console.log(error);
     });

@@ -1,8 +1,9 @@
 export class Order {
    customerId: string;
    orderId: string;
-   products: [{ skuCode: string, set: number, moq: number }];
-   total: string;
+   items: [{productId: number, pack: number,
+      ratioQty: number}];
+   total: number;
    addressDetails: [{
       name: string;
       mobileNumber: number;

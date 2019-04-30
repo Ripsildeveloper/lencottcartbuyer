@@ -30,8 +30,6 @@ export class PlaceOrderComponent implements OnInit {
   id;
   order: Order;
   orderModel: Order;
-  /* productModel: Product;
-  orderModel: Order; */
   message;
   action;
   moqModel;
@@ -41,13 +39,11 @@ export class PlaceOrderComponent implements OnInit {
   loginStatus;
   billingDetails: any;
   addAddressDetails: boolean;
-  /* addressHolder: AddressModel; */
   orderSummary: any;
   sumValue: any;
   addressSelected: AddressModel;
   subTotal = 0;
   totalItems = 0;
-  /* private productService: ProductService */
   constructor(private fb: FormBuilder, private route: ActivatedRoute,
               private snackBar: MatSnackBar, private router: Router, private addressService: AddressService,
               private accountService: AccountService) { }
@@ -70,7 +66,7 @@ export class PlaceOrderComponent implements OnInit {
     this.cartModel = new Cart();
     this.cartModel.userId = this.userId;
     this.cartModel.items = totalItem;
-    this.accountService.addToCart(this.cartModel).subscribe(data => {
+    this.accountService.addToCartCheckout(this.cartModel).subscribe(data => {
       this.shopModel = data;
       this.total();
     }, error => {
@@ -148,13 +144,13 @@ export class PlaceOrderComponent implements OnInit {
     );
   }
 
-  orderConfirmDetails(address, total) {
-    const totalItem = this.shopModel.map(element => element.skuDetail);
+  confirmOrderData(address) {
+    const totalItem = this.shopModel.map(element => element.items);
     this.orderModel = new Order();
     this.orderModel.customerId = this.userId;
     this.orderModel.addressDetails = address;
-    this.orderModel.products = totalItem;
-    this.orderModel.total = total;
+    this.orderModel.items = totalItem;
+    this.orderModel.total = this.subTotal;
     this.accountService.confirmOrder(this.orderModel).subscribe(data => {
     this.orderModel = data;
     }, err => {
@@ -193,26 +189,19 @@ export class PlaceOrderComponent implements OnInit {
       return sum; */
     }
   }
-  /* orderPlaced()   {
-    this.matSnackBar.open('order Placed Successfully', this.action, {
-      duration: 2000,
-    });
-    this.router.navigate(['home/welcome']);
-  } */
   totalQty() {
-    let set = 0;
+    let pack = 0;
     this.subTotal = 0;
     this.totalItems = 0;
     const totalProduct: any = this.shopModel.map(item => item.cart_product[0]);
-    console.log(totalProduct);
-    const totalSet = this.shopModel.map(item => item.skuDetail);
+    const totalSet = this.shopModel.map(item => item.items);
     totalSet.map(item => {
-      set += item.set;
-      this.totalItems += item.set * item.moq;
-      const priceSingle = totalProduct.find(test => test._id === item.productId);
-      this.subTotal += item.set * item.moq * priceSingle.price;
+      pack += item.pack;
+      this.totalItems += item.pack;
+      const priceSingle = totalProduct.find(test =>  test._id === item.productId);
+      this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
     });
-    sessionStorage.setItem('set', JSON.stringify(set));
+    sessionStorage.setItem('pack', JSON.stringify(pack));
   }
   reduceQty(qty, price) {
     this.changingQty = +qty - this.moqModel.moqQuantity;

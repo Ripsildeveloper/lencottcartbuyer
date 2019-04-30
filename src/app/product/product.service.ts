@@ -83,7 +83,7 @@ export class ProductService {
   }
   deleteToCart(userid, proId) {
     const cartUrl = 'deletecart/';
-    const productUrl = '/skuid/';
+    const productUrl = '/itemId/';
     const url: string = this.serviceUrl + cartUrl + userid + productUrl + proId;
     return this.httpClient.delete<Cart>(url);
   }

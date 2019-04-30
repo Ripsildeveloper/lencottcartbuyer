@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './../../account.service';
-/* import { Order } from './../../../shared/model/order.model'; */
+import { Order } from './../../../shared/model/order.model';
 
 @Component({
   selector: 'app-order',
@@ -9,20 +9,20 @@ import { AccountService } from './../../account.service';
 })
 export class OrderComponent implements OnInit {
   userId: string;
-  /* order: Order; */
+  order: Order;
   constructor(private accountService: AccountService) { }
 
   ngOnInit() {
-    /* this.getCards(); */
+    this.getCards();
   }
 
- /*  getCards() {
+  getCards() {
     this.userId = sessionStorage.getItem('userId');
     this.accountService.getCustomerOrderDetails(this.userId).subscribe(data => {
     this.order = data;
     }, error => {
       console.log(error);
     });
-  } */
+  }
 
 }

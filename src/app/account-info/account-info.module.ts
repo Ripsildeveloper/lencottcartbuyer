@@ -49,12 +49,13 @@ import { OrderComponent } from './order-mananagement/order/order.component';
 import { PlaceOrderComponent } from './checkout/place-order/place-order.component';
 import { AllAddressComponent } from './checkout/all-address/all-address.component';
 import { CheckoutCartComponent } from './checkout/checkout-cart/checkout-cart.component';
+import { ConfirmComponent } from './checkout/confirm/confirm.component';
 
 @NgModule({
   declarations: [RegistrationComponent,
     CardDetailsComponent, AddressComponent, ProfileComponent,
      SigninComponent, AccountDetailsComponent, ListAddressComponent,
-      ListCardComponent, OrderComponent, PlaceOrderComponent, AllAddressComponent, CheckoutCartComponent],
+      ListCardComponent, OrderComponent, PlaceOrderComponent, AllAddressComponent, CheckoutCartComponent, ConfirmComponent],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     AccountInfoRoutingModule,

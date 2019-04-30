@@ -10,8 +10,7 @@ import { ProfileModel } from './profile/profile.model';
 import { SignIn } from './signin/signIn.model';
 import { AppSetting } from './../config/appSetting';
 import { Observable, from } from 'rxjs';
-/* import { Product } from './../shared/product.model';
-import { Order } from './../shared/model/order.model'; */
+
 
 
 @Injectable({
@@ -61,10 +60,16 @@ export class AccountService {
     const url: string = this.serviceUrl + signInurl;
     return this.http.post<SignIn>(url, data);
   }
-  addToCart(cart): Observable<Cart> {
+  addToCartCheckout(cart): Observable<Cart> {
     const cartUrl = 'cart/';
     const url: string = this.serviceUrl + cartUrl;
     return this.http.post<Cart>(url, cart);
+  }
+
+  getCustomerOrderDetails(userId): Observable<Order> {
+    const cartUrl = 'orderview/';
+    const url: string = this.serviceUrl + cartUrl + userId;
+    return this.http.get<Order>(url);
   }
 
   addToCartDecrement(cart): Observable<Cart> {

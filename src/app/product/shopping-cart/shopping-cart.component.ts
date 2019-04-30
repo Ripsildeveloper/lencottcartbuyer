@@ -33,51 +33,7 @@ export class ShoppingCartComponent implements OnInit {
       this.shopModel = JSON.parse(sessionStorage.getItem('cart')) || [];
     }
   }
-  /* action(event, item) {
-    if (JSON.parse(sessionStorage.getItem('login'))) {
-      switch (event) {
-        case 'add':
-          this.addToCartServer(this.userId, item);
-          break;
-        case 'min':
-          item.set--;
-          if (item.set === 0) {
-            this.removeCart(this.userId, item);
-          } else {
-            this.minusCart(this.userId, item);
-          }
-          break;
-        case 'clear':
-          this.removeCart(this.userId, item);
-          break;
-        default:
-          break;
-      }
-    } else {
-      switch (event) {
-        case 'add':
-          item.set++;
-          item.subTotal = item.price * item.set;
-          sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
-          break;
-        case 'min':
-          item.set--;
-          item.subTotal = item.price * item.set;
-          sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
-          if (item.set === 0) {
-            this.clearFromCart(item);
-          }
-          break;
-        case 'clear':
-          this.clearFromCart(item);
-          break;
-        default:
-          break;
-      }
-    }
-  } */
   actionPlus(product) {
-
     const totalItem: any = [];
     const cart = {
       productId: product,
@@ -117,8 +73,6 @@ export class ShoppingCartComponent implements OnInit {
     sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
   }
   total() {
-    /* let sum = 0; */
-
     if (JSON.parse(sessionStorage.getItem('login'))) {
       this.totalQty();
     } else {
@@ -136,25 +90,23 @@ export class ShoppingCartComponent implements OnInit {
     this.router.navigate(['home/welcome']);
   }
   totalQty() {
-    let set = 0;
+    let pack = 0;
     this.subTotal = 0;
     this.totalItems = 0;
     const totalProduct: any = this.shopModel.map(item => item.cart_product[0]);
-    console.log(totalProduct);
     const totalSet = this.shopModel.map(item => item.items);
     totalSet.map(item => {
-      set += item.set;
-      this.totalItems += item.set * item.moq;
+      pack += item.pack;
+      this.totalItems += item.pack;
       const priceSingle = totalProduct.find(test =>  test._id === item.productId);
-      this.subTotal += item.set * item.moq  * priceSingle.price;
+      this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
     });
-    sessionStorage.setItem('set', JSON.stringify(set));
+    sessionStorage.setItem('pack', JSON.stringify(pack));
   }
   shoppingCartUser(userId) {
     this.productService.shoppingUser(userId).subscribe(data => {
     this.shopModel = data;
-    /* console.log(this.shopModel); */
-    /* this.total(); */
+    this.total();
     }, err => {
       console.log(err);
     });

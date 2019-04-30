@@ -30,49 +30,43 @@ export class CheckoutCartComponent implements OnInit {
 
   ngOnInit() {
   }
-  actionPlusData(product, productSkuCode, productMoq)   {
+  actionPlusData(product)   {
     const totalItem: any = [];
-    const cart = {
+    const cart: any = {
       productId: product,
-      skuCode: productSkuCode,
-      moq: productMoq,
-      set: 1
+      pack: 1
     };
     totalItem.push(cart);
     this.addPlus.emit(totalItem);
   }
 
-  actionMinusData(product, productSkuCode, productMoq) {
+  actionMinusData(product) {
     const cart: any = {
       productId: product,
-      skuCode: productSkuCode,
-      moq: productMoq,
-      set: 1
+      pack: 1
     };
     this.minusPlus.emit(cart);
   }
   total() {
-    /* let sum = 0; */
-
     if (JSON.parse(sessionStorage.getItem('login'))) {
       this.totalQty();
     } else {
     }
   }
   totalQty() {
-    let set = 0;
+    let pack = 0;
     this.subTotal = 0;
     this.totalItems = 0;
     const totalProduct: any = this.shopModel.map(item => item.cart_product[0]);
     console.log(totalProduct);
-    const totalSet = this.shopModel.map(item => item.skuDetail);
+    const totalSet = this.shopModel.map(item => item.items);
     totalSet.map(item => {
-      set += item.set;
-      this.totalItems += item.set * item.moq;
+      pack += item.pack;
+      this.totalItems += item.pack * item.ratioQty;
       const priceSingle = totalProduct.find(test =>  test._id === item.productId);
-      this.subTotal += item.set * item.moq  * priceSingle.price;
+      this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
     });
-    sessionStorage.setItem('set', JSON.stringify(set));
+    sessionStorage.setItem('pack', JSON.stringify(pack));
   }
 
 

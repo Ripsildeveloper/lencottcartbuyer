@@ -13,8 +13,7 @@
           <p><b>Price</b></p>
           <div class="row">
             <div class="col-md-12">
-              <ul style="
-                padding-left: 0px;
+              <ul style="padding-left: 0px;
             ">
                 <li *ngFor="let data of productSettingsPrice; let i = index;">
                   <mat-checkbox color="primary" (change)="showPriceOptions($event, i)" [value]="data"
@@ -83,19 +82,17 @@
           </nav>
         </div>
         <div class="row" style="cursor: pointer">
-          <div class="col-md-3 col-6" *ngFor="let product of productModel"
-          (click)="viewSingleProduct(product._id)">
-            <a class="product" >
-              <img [src]="product.productImageName[0]"
-               >
+          <div class="col-md-3 col-6" *ngFor="let product of productModel" (click)="viewSingleProduct(product._id)">
+            <a class="product">
+              <img [src]="product.productImageName[0]">
             </a>
             <div>
               <p>{{ product.productName }}</p>
               <p><b>&#x20a8; {{ product.price }}</b></p>
-              
-            
-            
-                Size: <span *ngFor="let size of product?.size">{{size.sizeName}} </span>
+
+
+
+              Size: <span *ngFor="let size of product?.size">{{size.sizeName}} </span>
             </div>
           </div>
         </div>
