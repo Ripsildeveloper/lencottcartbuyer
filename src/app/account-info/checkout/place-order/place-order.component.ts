@@ -153,6 +153,8 @@ export class PlaceOrderComponent implements OnInit {
     this.orderModel.total = this.subTotal;
     this.accountService.confirmOrder(this.orderModel).subscribe(data => {
     this.orderModel = data;
+    this.qtyUpdate(this.orderModel);
+    this.deleteCart(this.userId);
     }, err => {
       console.log(err);
     });
@@ -174,8 +176,21 @@ export class PlaceOrderComponent implements OnInit {
       console.log(error);
     });
   }
-
-
+  deleteCart(userId) {
+    this.accountService.deleteAllCart(userId).subscribe(data => {
+    this.shopModel = data;
+    this.router.navigate(['/account/order']);
+    }, error => {
+      console.log(error);
+    });
+  }
+  qtyUpdate(order) {
+    this.accountService.confirmQtyOrder(order).subscribe(data => {
+    this.shopModel = data;
+      }, error => {
+        console.log(error);
+      });
+  }
   total() {
     /* let sum = 0; */
 

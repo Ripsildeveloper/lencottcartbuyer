@@ -5,7 +5,6 @@ import { initNgModule } from '@angular/core/src/view/ng_module';
 import {MOQ } from './../../../shared/model/moq.model';
 import { Router } from '@angular/router';
 import { AppSetting } from '../../../config/appSetting';
-import { element } from '@angular/core/src/render3';
 import { MatSnackBar } from '@angular/material';
 
 
@@ -68,8 +67,6 @@ export class CheckoutCartComponent implements OnInit {
     });
     sessionStorage.setItem('pack', JSON.stringify(pack));
   }
-
-
   removeCartData(item) {
     this.deleteCart.emit(item);
   }

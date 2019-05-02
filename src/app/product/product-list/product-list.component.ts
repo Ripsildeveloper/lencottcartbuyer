@@ -89,7 +89,7 @@ export class ProductListComponent implements OnInit {
       console.log(err);
     });
   }
-  
+
   getFilterMenu() {
     this.productService.getFilterData().subscribe(data => {
       this.productSettingsPrice = data[0].priceRange;

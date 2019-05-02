@@ -64,10 +64,6 @@ this.details = true;
   }
   addToCartServer(userId, product) {
     this.message = 'Product added to Cart';
- /*    this.moqQty = this.moqValue.filter(
-      data => data._id === product.moq);
-    this.moqQtyValue = this.moqQty[0].moqQuantity;
-    console.log('order qty', this.moqQty[0].moqQuantity); */
     console.log(product.price);
     const item = {
       productId: product._id,

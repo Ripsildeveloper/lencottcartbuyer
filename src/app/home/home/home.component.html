@@ -8,5 +8,6 @@
 </div>
 <a class="prev" (click)="minusSlides(slideIndex)">&#10094;</a>
 <a class="next" (click)="plusSlides(slideIndex)">&#10095;</a>
-<app-promotion [promotionsModel]="promotion" ></app-promotion>
+<app-promotion *ngFor="let pro of promotion"
+[promotionsModel]="pro" ></app-promotion>
 <app-hot-product [hotProduct]="hotProduct"></app-hot-product>

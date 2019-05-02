@@ -159,7 +159,8 @@ export class ProductDetailComponent implements OnInit {
     const cart = {
       productId: product,
       pack: count,
-      ratioQty: packSumTotal
+      ratioQty: packSumTotal,
+      size: sizeData
     };
     totalItem.push(cart);
     this.cartModel = new Cart();

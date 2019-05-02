@@ -18,7 +18,6 @@ export class ListCardComponent implements OnInit {
   addressForm: FormGroup;
   cardDetailModel: CardDetailModel[];
   addressHolder: CardDetailModel;
-  
   constructor(private accountService: AccountService, private cardDetailsService: CardDetailsService ) { }
 
   ngOnInit() {

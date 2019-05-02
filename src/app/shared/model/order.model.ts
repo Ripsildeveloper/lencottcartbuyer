@@ -1,8 +1,9 @@
+import { Size } from './size.model';
 export class Order {
    customerId: string;
    orderId: string;
    items: [{productId: number, pack: number,
-      ratioQty: number}];
+      ratioQty: number, size: [Size]}];
    total: number;
    addressDetails: [{
       name: string;

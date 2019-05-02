@@ -80,8 +80,13 @@ export class AccountService {
 
   deleteToCart(userid, proId) {
     const cartUrl = 'deletecart/';
-    const productUrl = '/skuid/';
+    const productUrl = '/itemId/';
     const url: string = this.serviceUrl + cartUrl + userid + productUrl + proId;
+    return this.http.delete<Cart>(url);
+  }
+  deleteAllCart(carId) {
+    const cartUrl = 'deletecart/';
+    const url: string = this.serviceUrl + cartUrl + carId;
     return this.http.delete<Cart>(url);
   }
   shoppingUser(userId) {
@@ -105,6 +110,10 @@ export class AccountService {
     const url: string = this.serviceUrl + orderUrl;
     return this.http.put<Order>(url, order);
   }
+  confirmQtyOrder(order) {
+    const orderUrl = 'updateqtyproduct/';
+    const url: string = this.serviceUrl + orderUrl + order.orderId;
+    return this.http.put<Order>(url, order);
+  }
+
 }
-
-

@@ -42,7 +42,6 @@ export class SharedService {
       });
       return cart.length;
     }
-
   }
   getLogin() {
     return JSON.parse(sessionStorage.getItem('login'));
