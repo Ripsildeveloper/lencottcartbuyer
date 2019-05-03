@@ -65,7 +65,6 @@ export class CheckoutCartComponent implements OnInit {
       const priceSingle = totalProduct.find(test =>  test._id === item.productId);
       this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
     });
-    sessionStorage.setItem('pack', JSON.stringify(pack));
   }
   removeCartData(item) {
     this.deleteCart.emit(item);

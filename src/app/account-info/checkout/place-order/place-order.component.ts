@@ -53,9 +53,9 @@ export class PlaceOrderComponent implements OnInit {
     /* this.viewSingleProduct(); */
     this.loginStatus = sessionStorage.getItem('login');
     this.userId = sessionStorage.getItem('userId');
-    this.getAddress();
     if (JSON.parse(sessionStorage.getItem('login'))) {
       this.userId = sessionStorage.getItem('userId');
+      this.getAddress();
       this.shoppingCartUser(this.userId);
     } else {
       this.shopModel = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -180,6 +180,7 @@ export class PlaceOrderComponent implements OnInit {
     this.accountService.deleteAllCart(userId).subscribe(data => {
     this.shopModel = data;
     this.router.navigate(['/account/order']);
+    sessionStorage.setItem('pack', JSON.stringify(this.shopModel.length));
     }, error => {
       console.log(error);
     });
@@ -216,7 +217,7 @@ export class PlaceOrderComponent implements OnInit {
       const priceSingle = totalProduct.find(test =>  test._id === item.productId);
       this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
     });
-    sessionStorage.setItem('pack', JSON.stringify(pack));
+    sessionStorage.setItem('pack', JSON.stringify(this.shopModel.length));
   }
   reduceQty(qty, price) {
     this.changingQty = +qty - this.moqModel.moqQuantity;

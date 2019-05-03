@@ -86,11 +86,11 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  skuProduct(productId, moq, count, packSumTotal, sizeData) {
+  skuProduct(productId, count, moq, packSumTotal, sizeData) {
     this.noPrductAdd = false;
     const userId = sessionStorage.getItem('userId');
     if (JSON.parse(sessionStorage.getItem('login'))) {
-      if (count <= moq) {
+      if ( moq <= count ) {
         this.addToCartServer(userId, productId, count, packSumTotal, sizeData);
       } else {
         setTimeout(() => {
@@ -98,59 +98,58 @@ export class ProductDetailComponent implements OnInit {
         }, 100);
       }
     } else {
+      if (moq <= count) {
+        this.addToCartLocal(productId, count, packSumTotal, sizeData);
+      } else {
+        setTimeout(() => {
+          this.noPrductAdd = true;
+        }, 100);
+      }
     }
   }
-  addToCartLocal(item, product, productMoq) {
-    this.message = 'Product Added To Cart';
+  addToCartLocal(product, count, packSumTotal, sizeData) {
     const cartLocal = JSON.parse(sessionStorage.getItem('cart')) || [];
     if (cartLocal.length === 0) {
-      const skuDetail: any = [];
-      item.forEach(element => {
-        const cart = {
-          productId: product,
-          skuCode: element.skuCode,
-          moq: productMoq,
-          set: element.setCount,
-        };
-        const finalCart = {
-          skuDetail: cart,
-          cart_product: this.productModel
-        };
-        skuDetail.push(finalCart);
-      });
-      console.log(skuDetail);
-      sessionStorage.setItem('cart', JSON.stringify(skuDetail));
+      const totalItem: any = [];
+      const currentProduct: any = [];
+      currentProduct.push(this.productModel);
+      const cart = {
+        productId: product,
+        pack: count,
+        ratioQty: packSumTotal,
+        size: sizeData,
+        cart_product: currentProduct
+      };
+      totalItem.push(cart);
+      this.message = 'Product Added To Cart';
+      sessionStorage.setItem('cart', JSON.stringify(totalItem));
       this.snackBar.open(this.message, this.action, {
         duration: 3000,
       });
     } else {
-      const cartDetail: any = [];
-      item.forEach(element => {
-        const cart = {
-          productId: product,
-          skuCode: element.skuCode,
-          moq: productMoq,
-          set: element.setCount,
-        };
-        const finalCart = {
-          skuDetail: cart,
-          cart_product: this.productModel,
-        };
-        cartDetail.push(finalCart);
-      });
-      cartDetail.map(element => {
-        if (cartLocal.find(s => s.skuCode === element.skuDetail.skuCode)) {
-          const dbSame = cartLocal.find(s => s.skuCode === element.skuDetail.skuCode);
-          dbSame.set += element.set;
-          dbSame.moq = element.moq;
-          console.log(element.skuDetail);
+      const totalItem: any = [];
+      const currentProduct: any = [];
+      currentProduct.push(this.productModel);
+      const cart = {
+        productId: product,
+        pack: count,
+        ratioQty: packSumTotal,
+        size: sizeData,
+        cart_product: currentProduct
+      };
+      totalItem.push(cart);
+      totalItem.map(element => {
+        if (cartLocal.find(s => s.productId === element.productId)) {
+          const dbSame = cartLocal.find(s => s.productId === element.productId);
+          dbSame.pack += element.pack;
         } else {
           cartLocal.push(element);
         }
       });
+      this.message = 'Product Added To Cart';
       sessionStorage.setItem('cart', JSON.stringify(cartLocal));
       this.snackBar.open(this.message, this.action, {
-        duration: 3000,
+        duration: 2000,
       });
     }
   }
@@ -168,6 +167,7 @@ export class ProductDetailComponent implements OnInit {
     this.cartModel.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
     this.shopModel = data;
+    sessionStorage.setItem('pack', JSON.stringify(this.shopModel.length));
     this.message = 'Product Added To Cart';
     this.snackBar.open(this.message, this.action, {
       duration: 3000,
@@ -182,7 +182,7 @@ export class ProductDetailComponent implements OnInit {
   actionMinus(minus) {
     this.packCount = --minus;
   }
-  total() {
+  /* total() {
     let sum = 0;
     if (JSON.parse(sessionStorage.getItem('login'))) {
       this.totalQty();
@@ -201,5 +201,5 @@ export class ProductDetailComponent implements OnInit {
       set += item.set;
     });
     sessionStorage.setItem('set', JSON.stringify(set));
-  }
+  } */
 }

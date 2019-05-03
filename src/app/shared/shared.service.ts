@@ -32,14 +32,14 @@ export class SharedService {
     return this.httpClient.get<Footer>(url);
   }
   addToQty() {
-    let sum = 0;
+    /* let sum = 0; */
     if (JSON.parse(sessionStorage.getItem('login'))) {
-      return JSON.parse(sessionStorage.getItem('set'));
+      return JSON.parse(sessionStorage.getItem('pack'));
     } else {
       const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      cart.map(item => {
+    /*   cart.map(item => {
         sum += item.length;
-      });
+      }); */
       return cart.length;
     }
   }
@@ -50,7 +50,7 @@ export class SharedService {
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('userEmailId');
     sessionStorage.setItem('login', 'false');
-    sessionStorage.removeItem('set');
+    sessionStorage.removeItem('pack');
 
   }
   findName() {

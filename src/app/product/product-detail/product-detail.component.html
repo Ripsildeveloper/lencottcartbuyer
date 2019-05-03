@@ -20,8 +20,6 @@
         <ul class="nav sizeNav mt10" role="tablist">
           <li role="presentation" *ngFor="let data of productModel?.size">
             <div class="sizeText"><a>{{data.sizeName}}</a></div>
-
-            <!-- <div>{{data.ratio}}</div> -->
           </li>
         </ul>
       </div>
@@ -36,7 +34,7 @@
     </div>
     <div class="form-group">
       <div class="alert alert-danger" role="alert" *ngIf="noPrductAdd">
-        Please add minimum Qty
+        Please add minimum Qty <strong>{{productModel?.moq}}</strong>
       </div>
     </div>
     <div class="form-group">

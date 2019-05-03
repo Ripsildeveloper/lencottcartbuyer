@@ -21,6 +21,7 @@ export class ShoppingCartComponent implements OnInit {
   moqModel: MOQ;
   subTotal  = 0;
   action;
+  localImageUrlView = true;
   totalItems = 0;
   productImageUrl: string = AppSetting.productImageUrl;
   constructor(private productService: ProductService, private router: Router, private matSnackBar: MatSnackBar) { }
@@ -28,9 +29,12 @@ export class ShoppingCartComponent implements OnInit {
   ngOnInit() {
     if (JSON.parse(sessionStorage.getItem('login'))) {
       this.userId = sessionStorage.getItem('userId');
+      this.localImageUrlView = true;
       this.shoppingCartUser(this.userId);
     } else {
+      this.localImageUrlView = false;
       this.shopModel = JSON.parse(sessionStorage.getItem('cart')) || [];
+      this.total();
     }
   }
   actionPlus(product) {
@@ -64,23 +68,30 @@ export class ShoppingCartComponent implements OnInit {
       console.log(error);
     });
   }
-  clearFromCart(product) {
+  removeLocalCart(product) {
     const item = this.shopModel.find(ite => {
       return ite.productId === product.productId;
     });
     const index = this.shopModel.indexOf(item);
     this.shopModel.splice(index, 1);
     sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
+    this.shopModel = JSON.parse(sessionStorage.getItem('cart')) || [];
+    this.total();
   }
   total() {
     if (JSON.parse(sessionStorage.getItem('login'))) {
       this.totalQty();
     } else {
-      /* const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      cart.map(item => {
-        sum += item.set * item.moq * item.price;
+      this.subTotal = 0;
+      this.totalItems = 0;
+      const totalProduct: any = this.shopModel.map(item => item.cart_product[0]);
+      const totalSet = this.shopModel.map(item => item);
+      totalSet.map(item => {
+        this.totalItems += item.pack;
+        const priceSingle = totalProduct.find(test =>  test._id === item.productId);
+        this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
       });
-      return sum; */
+      sessionStorage.setItem('pack', JSON.stringify(this.shopModel.length));
     }
   }
   orderPlaced()   {
@@ -88,6 +99,19 @@ export class ShoppingCartComponent implements OnInit {
       duration: 2000,
     });
     this.router.navigate(['home/welcome']);
+  }
+  actionLocalMinus(item)   {
+    item.pack--;
+    if (item.set === 0) {
+      this.removeLocalCart(item);
+    }
+    sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
+    this.total();
+  }
+  actionLocalPlus(item) {
+    item.pack++;
+    sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
+    this.total();
   }
   totalQty() {
     let pack = 0;
@@ -101,7 +125,7 @@ export class ShoppingCartComponent implements OnInit {
       const priceSingle = totalProduct.find(test =>  test._id === item.productId);
       this.subTotal += item.pack * item.ratioQty  * priceSingle.price;
     });
-    sessionStorage.setItem('pack', JSON.stringify(pack));
+    sessionStorage.setItem('pack', JSON.stringify(this.shopModel.length));
   }
   shoppingCartUser(userId) {
     this.productService.shoppingUser(userId).subscribe(data => {
@@ -112,33 +136,6 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
- /*  minusCart(userId, product) {
-    const item: any = {
-      productId: product.productId,
-      productName: product.productName,
-      productDescription: product.productDescription,
-      productImageName: product.productImageName,
-      price: product.price,
-      subTotal: product.price * 1,
-      set: 1
-    };
-    this.cart = new Cart();
-    this.cart.userId = userId;
-    this.cart.skuDetail = item;
-    this.productService.addToCartMinus(this.cart).subscribe(data => {
-      this.shopModel = data;
-    }, err => {
-      console.log(err);
-    });
-  } */
-  /*   reduceCart(proId) {
-     this.productService.reduceToCart(proId).subscribe(data => {
-       this.shopModel = data;
-       localStorage.setItem('cart', JSON.stringify(data));
-     }, err => {
-       console.log(err);
-     });
-   }*/
   removeCart(item) {
     this.productService.deleteToCart(this.userId, item).subscribe(data => {
       this.shopModel = data;
@@ -149,8 +146,7 @@ export class ShoppingCartComponent implements OnInit {
   }
   placeOrder() {
     if (JSON.parse(sessionStorage.getItem('login'))) {
-      this.router.navigate(['product/placeorder']);
-      sessionStorage.setItem('orderSummary', JSON.stringify(this.shopModel));
+      this.router.navigate(['account/checkout']);
     } else {
     this.router.navigate(['account/signin']);
    }

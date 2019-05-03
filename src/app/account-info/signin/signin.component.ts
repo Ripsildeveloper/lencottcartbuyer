@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 
 import {SignIn} from './signIn.model';
 import {AccountService} from '../account.service';
-/* import { Cart } from './../../shared/model/cart.model';
-import { Product } from './../../shared/model/product.model'; */
+import { Cart } from './../../shared/model/cart.model';
+import { Product } from './../../shared/model/product.model';
 
 @Component({
   selector: 'app-signin',
@@ -18,8 +18,8 @@ export class SigninComponent implements OnInit {
   signInModel: SignIn;
   pwdError: boolean;
   submitted = false;
-  /* cart: Cart;
-  productModel: Product[] = []; */
+  cart: Cart;
+  productModel: Product;
   userId: string;
   cartLocal: any;
   constructor(private fb: FormBuilder, private router: Router, private accountService: AccountService ) { }
@@ -49,29 +49,31 @@ onSubmit() {
       /* this.setCookie(data[0]._id); */
       sessionStorage.setItem('login', 'true');
       sessionStorage.setItem('userId', data.customerId);
-      this.router.navigate(['product/shopping']);
-     /*  this.logInUserData(); */
+      this.logInUserData();
     }
   });
 }
-/*
+
 logInUserData()   {
   this.userId = sessionStorage.getItem('userId');
   this.cartLocal = JSON.parse(sessionStorage.getItem('cart'));
   if (!this.cartLocal)     {
+    this.router.navigate(['product/shopping']);
   } else {
       this.addToCartServer(this.userId, this.cartLocal);
   }
-} */
-/* addToCartServer(userId, product) {
+}
+addToCartServer(userId, items) {
   this.cart = new Cart();
   this.cart.userId = userId;
-  this.cart.product = product;
+  this.cart.items = items;
   this.accountService.addToCart(this.cart).subscribe(data => {
-  this.productModel = data;
+  this.cart = data;
+  sessionStorage.removeItem('cart');
+  this.router.navigate(['product/shopping']);
   }, error => {
     console.log(error);
   });
-} */
+}
 
 }

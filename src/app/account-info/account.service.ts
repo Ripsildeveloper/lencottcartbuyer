@@ -77,6 +77,11 @@ export class AccountService {
     const url: string = this.serviceUrl + cartUrl;
     return this.http.post<Cart>(url, cart);
   }
+  addToCart(cart): Observable<Cart> {
+    const cartUrl = 'cart';
+    const url: string = this.serviceUrl + cartUrl;
+    return this.http.post<Cart>(url, cart);
+  }
 
   deleteToCart(userid, proId) {
     const cartUrl = 'deletecart/';
