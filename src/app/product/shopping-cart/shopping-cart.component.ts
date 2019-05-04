@@ -23,6 +23,7 @@ export class ShoppingCartComponent implements OnInit {
   action;
   localImageUrlView = true;
   totalItems = 0;
+  noPrductAdd = false;
   productImageUrl: string = AppSetting.productImageUrl;
   constructor(private productService: ProductService, private router: Router, private matSnackBar: MatSnackBar) { }
 
@@ -49,24 +50,48 @@ export class ShoppingCartComponent implements OnInit {
     this.cartModel.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
     this.shopModel = data;
-    }, error => {
-      console.log(error);
-    });
-  }
-  actionMinus(product) {
-    const cart: any = {
-      productId: product,
-      pack: 1
-    };
-    this.cartModel = new Cart();
-    this.cartModel.userId = this.userId;
-    this.cartModel.items = cart;
-    this.productService.addToCartDecrement(this.cartModel).subscribe(data => {
-    this.shopModel = data;
     this.total();
     }, error => {
       console.log(error);
     });
+  }
+  actionMinus(product, pack, moq) {
+    const cart: any = {
+      productId: product,
+      pack: 1
+    };
+    if ( moq < pack ) {
+      this.cartModel = new Cart();
+      this.cartModel.userId = this.userId;
+      this.cartModel.items = cart;
+      this.productService.addToCartDecrement(this.cartModel).subscribe(data => {
+      this.shopModel = data;
+      this.total();
+      }, error => {
+        console.log(error);
+      });
+    } else {
+     /*  this.shopModel.forEach(
+        items => {
+          if (items._id === product) {
+            items.showCondtion = true;
+          } else {
+            items.showCondtion = false;
+          }
+        }
+      ); */
+      this.shopModel.forEach((val) => {
+        if (val.items.productId === product) {
+          // execute last item logic
+          val.items.showCondtion = true;
+        } else {
+          val.items.showCondtion = false;
+        }
+      });
+     /*  setTimeout(() => {
+        this.noPrductAdd = true;
+      }, 100); */
+    }
   }
   removeLocalCart(product) {
     const item = this.shopModel.find(ite => {

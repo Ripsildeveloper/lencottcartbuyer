@@ -91,7 +91,7 @@ export class ProductDetailComponent implements OnInit {
     const userId = sessionStorage.getItem('userId');
     if (JSON.parse(sessionStorage.getItem('login'))) {
       if ( moq <= count ) {
-        this.addToCartServer(userId, productId, count, packSumTotal, sizeData);
+        this.addToCartServer(userId, productId, count, moq,  packSumTotal, sizeData);
       } else {
         setTimeout(() => {
           this.noPrductAdd = true;
@@ -99,7 +99,7 @@ export class ProductDetailComponent implements OnInit {
       }
     } else {
       if (moq <= count) {
-        this.addToCartLocal(productId, count, packSumTotal, sizeData);
+        this.addToCartLocal(productId, count, moq, packSumTotal, sizeData);
       } else {
         setTimeout(() => {
           this.noPrductAdd = true;
@@ -107,7 +107,7 @@ export class ProductDetailComponent implements OnInit {
       }
     }
   }
-  addToCartLocal(product, count, packSumTotal, sizeData) {
+  addToCartLocal(product, count, productMoq, packSumTotal, sizeData) {
     const cartLocal = JSON.parse(sessionStorage.getItem('cart')) || [];
     if (cartLocal.length === 0) {
       const totalItem: any = [];
@@ -116,6 +116,7 @@ export class ProductDetailComponent implements OnInit {
       const cart = {
         productId: product,
         pack: count,
+        moq: productMoq,
         ratioQty: packSumTotal,
         size: sizeData,
         cart_product: currentProduct
@@ -133,6 +134,7 @@ export class ProductDetailComponent implements OnInit {
       const cart = {
         productId: product,
         pack: count,
+        moq: productMoq,
         ratioQty: packSumTotal,
         size: sizeData,
         cart_product: currentProduct
@@ -153,11 +155,12 @@ export class ProductDetailComponent implements OnInit {
       });
     }
   }
-  addToCartServer(userId, product, count, packSumTotal, sizeData) {
+  addToCartServer(userId, product, count, productMoq, packSumTotal, sizeData) {
     const totalItem: any = [];
     const cart = {
       productId: product,
       pack: count,
+      moq: productMoq,
       ratioQty: packSumTotal,
       size: sizeData
     };
@@ -167,7 +170,7 @@ export class ProductDetailComponent implements OnInit {
     this.cartModel.items = totalItem;
     this.productService.addToCart(this.cartModel).subscribe(data => {
     this.shopModel = data;
-    sessionStorage.setItem('pack', JSON.stringify(this.shopModel.length));
+    sessionStorage.setItem('pack', this.shopModel.length);
     this.message = 'Product Added To Cart';
     this.snackBar.open(this.message, this.action, {
       duration: 3000,

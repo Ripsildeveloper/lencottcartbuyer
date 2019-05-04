@@ -1,8 +1,10 @@
 <div class="row galleryRow">
-  <div class="col-sm-5 productImages">
-    <img [src]="productModel?.productImageName[0]" class="responsive">
+  <div class="col-sm-6 card">
+    <!-- <img [src]="productModel?.productImageName[0]" class="responsive"> -->
+    
+        <img [src]="productModel?.productImageName[0]" class="responsive">
   </div>
-  <div class="col-sm-7  productDiscription">
+  <div class="col-sm-6  productDiscription">
     <h3>{{productModel?.productName}}</h3>
     <div class="productPrice">
       <h4><span>&#x20B9;</span> {{productModel?.price}}</h4>
@@ -48,7 +50,8 @@
         <input type="text" id="quantity" name="quantity" class="form-control 
             text-center input-number" [value]="packCount" min="1" max="100" disabled>
         <span class="input-group-btn">
-          <button type="button" class="quantity-right-plus btn btn-primary btn-number" (click)="actionPlus(packCount)"
+          <button type="button" class="quantity-right-plus btn btn-primary btn-number"
+           (click)="actionPlus(packCount)"
             data-type="plus" data-field="">
             <span>+</span>
           </button>

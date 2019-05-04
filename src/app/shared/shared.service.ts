@@ -32,9 +32,10 @@ export class SharedService {
     return this.httpClient.get<Footer>(url);
   }
   addToQty() {
-    /* let sum = 0; */
+    let sum = 0;
     if (JSON.parse(sessionStorage.getItem('login'))) {
-      return JSON.parse(sessionStorage.getItem('pack'));
+        sum = +sessionStorage.getItem('pack');
+        return sum;
     } else {
       const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     /*   cart.map(item => {
