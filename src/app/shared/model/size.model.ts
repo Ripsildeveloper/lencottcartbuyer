@@ -3,4 +3,7 @@ export class Size {
     skuCode: string;
     sizeQty: number;
     ratio: number;
+    updateQty: number;
+    updateValue: boolean;
+    qtyCheck: boolean;
 }

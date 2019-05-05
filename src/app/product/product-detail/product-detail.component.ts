@@ -31,6 +31,12 @@ export class ProductDetailComponent implements OnInit {
   noPrductAdd = false;
   packSum = 0;
   packCount = 1;
+  updateQtyTrue = false;
+  labelSuccess = 'labelSuccess';
+  labelDanger = 'labelDanger';
+  displayClass: string;
+  stockItemStatus: string;
+  cartPack: number;
   constructor(public productService: ProductService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar) {
 
   }
@@ -44,6 +50,15 @@ export class ProductDetailComponent implements OnInit {
       this.productModel = data;
       this.productModel.size.map(element => {
         this.packSum += +element.ratio * this.productModel.moq;
+        if (element.sizeQty <= 0) {
+          element.qtyCheck = true;
+          this.updateQtyTrue = element.qtyCheck;
+          this.displayClass = this.labelDanger;
+          this.stockItemStatus = 'Not Available';
+        } else {
+          this.displayClass = this.labelSuccess;
+          this.stockItemStatus = 'Available';
+        }
       });
       /* this.productModel.size.forEach(element => {
         element.setCount = 0;
@@ -181,9 +196,29 @@ export class ProductDetailComponent implements OnInit {
   }
   actionPlus(plus) {
     this.packCount = ++plus;
+    this.productModel.size.map(element => {
+      const sizeQtySum = +element.ratio * this.productModel.moq * this.packCount;
+      const sizeQtyCheck =  (element.sizeQty) - (+element.ratio * this.productModel.moq  * (this.packCount + 1) );
+      element.updateQty = element.sizeQty - sizeQtySum;
+      if (sizeQtyCheck  < 0 )       {
+          element.updateValue = true;
+          this.updateQtyTrue = element.updateValue;
+      }
+    });
   }
   actionMinus(minus) {
     this.packCount = --minus;
+    this.productModel.size.map(element => {
+      const sizeQtySum = +element.ratio * this.productModel.moq * (this.packCount - 1 );
+      element.updateQty = element.sizeQty + sizeQtySum;
+      if (element.updateQty  > 0 )       {
+          element.updateValue = false;
+          this.updateQtyTrue = element.updateValue;
+      } else {
+        element.updateValue = true;
+        this.updateQtyTrue = element.updateValue;
+      }
+    });
   }
   /* total() {
     let sum = 0;

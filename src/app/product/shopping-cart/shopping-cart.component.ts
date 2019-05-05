@@ -71,26 +71,13 @@ export class ShoppingCartComponent implements OnInit {
         console.log(error);
       });
     } else {
-     /*  this.shopModel.forEach(
-        items => {
-          if (items._id === product) {
-            items.showCondtion = true;
-          } else {
-            items.showCondtion = false;
-          }
-        }
-      ); */
       this.shopModel.forEach((val) => {
         if (val.items.productId === product) {
-          // execute last item logic
           val.items.showCondtion = true;
         } else {
           val.items.showCondtion = false;
         }
       });
-     /*  setTimeout(() => {
-        this.noPrductAdd = true;
-      }, 100); */
     }
   }
   removeLocalCart(product) {
@@ -125,13 +112,25 @@ export class ShoppingCartComponent implements OnInit {
     });
     this.router.navigate(['home/welcome']);
   }
-  actionLocalMinus(item)   {
-    item.pack--;
+  actionLocalMinus(item, moq)   {
+   /*  item.pack--;
     if (item.set === 0) {
       this.removeLocalCart(item);
+    } */
+    const check = item.pack--;
+    if ( check > moq ) {
+      item.pack--;
+      sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
+      this.total();
+    } else {
+      this.shopModel.forEach((val) => {
+        if (val.productId === item) {
+          val.showCondtion = true;
+        } else {
+          val.showCondtion = false;
+        }
+      });
     }
-    sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
-    this.total();
   }
   actionLocalPlus(item) {
     item.pack++;

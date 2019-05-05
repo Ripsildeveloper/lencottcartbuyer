@@ -1,9 +1,9 @@
 <div *ngIf="shopModel.length === 0">
-    <mat-card class="text-center">
-      <p>Your cart is empty</p>
-      <button  class="addToCartButton" routerLink="/home/welcome">Continue To Shopping</button>
-    </mat-card>
-  </div>
+  <mat-card class="text-center">
+    <p>Your cart is empty</p>
+    <button class="addToCartButton" routerLink="/home/welcome">Continue To Shopping</button>
+  </mat-card>
+</div>
 <div *ngIf="shopModel.length !== 0">
   <div class="row">
     <div class="col-md-9 mt-2">
@@ -22,12 +22,12 @@
             </div>
             <div class="col-md-2">
               <h6 class="text-center"><small>Pack</small></h6>
-              
-              <h6 class="text-danger" *ngIf="shop.items.showCondtion"><small>Minimum Order is Required</small></h6>
+
+              <h6 class="text-danger" *ngIf="shop.items.showCondtion"><small>Minimum Order is
+                  <strong>{{cart.moq}}</strong></small></h6>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary btn-sm  btn-number"
-                 (click)="actionMinus(cart._id, shop.items.pack, cart.moq, shop)"
-                  [disabled]="shop.items.pack === 1">
+                  (click)="actionMinus(cart._id, shop.items.pack, cart.moq, shop)" [disabled]="shop.items.pack === 1">
                   <span>-</span>
                 </button>
               </span>
@@ -60,6 +60,9 @@
             <div class="col-md-2"><img class="img-fluid" style="height: 100px; width: 100px"
                 [src]="cart.productImageName[0]">
             </div>
+            
+            <h6 class="text-danger" *ngIf="shop.showCondtion"><small>Minimum Order is
+                <strong>{{cart.moq}}</strong></small></h6>
             <div class="col-md-3">
               <h6 class="product-name"><strong>{{cart.productName}}</strong></h6>
               <h6><small>{{cart.productDescription}}</small></h6>
@@ -71,8 +74,8 @@
               <h6 class="text-center"><small>Pack</small></h6>
               <span class="input-group-btn">
 
-                <button type="button" class="btn btn-primary btn-sm  btn-number" 
-                (click)="actionLocalMinus(shop)"
+                <button type="button" class="btn btn-primary btn-sm  btn-number"
+                 (click)="actionLocalMinus(shop, cart.moq)"
                   [disabled]="shop.pack === 1">
                   <span>-</span>
                 </button>
@@ -105,8 +108,8 @@
     </div>
     <div class="col-md-3 mt-2">
       <app-price-summary [totalItems]="totalItems" [subTotal]="subTotal"></app-price-summary>
-      <div class="float-right"><span  (click)="placeOrder()" class="addToCartButton">PLACE ORDER</span>
+      <div class="float-right"><span (click)="placeOrder()" class="addToCartButton">PLACE ORDER</span>
       </div>
     </div>
-    
   </div>
+</div>

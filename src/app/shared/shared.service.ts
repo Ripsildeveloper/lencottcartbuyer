@@ -52,7 +52,6 @@ export class SharedService {
     sessionStorage.removeItem('userEmailId');
     sessionStorage.setItem('login', 'false');
     sessionStorage.removeItem('pack');
-
   }
   findName() {
     return sessionStorage.getItem('userEmailId');

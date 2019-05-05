@@ -29,7 +29,7 @@ export class CheckoutCartComponent implements OnInit {
 
   ngOnInit() {
   }
-  actionPlusData(product)   {
+  actionPlusData(product, pack, moq)   {
     const totalItem: any = [];
     const cart: any = {
       productId: product,
@@ -39,12 +39,25 @@ export class CheckoutCartComponent implements OnInit {
     this.addPlus.emit(totalItem);
   }
 
-  actionMinusData(product) {
+  actionMinusData(shopModel, product, pack, moq) {
     const cart: any = {
       productId: product,
       pack: 1
     };
-    this.minusPlus.emit(cart);
+    if ( moq < pack ) {
+      this.cartModel = new Cart();
+      this.cartModel.userId = this.userId;
+      this.cartModel.items = cart;
+      this.minusPlus.emit(cart);
+    } else {
+        shopModel.forEach((val) => {
+        if (val.items.productId === product) {
+          val.items.showCondtion = true;
+        } else {
+          val.items.showCondtion = false;
+        }
+      });
+    }
   }
   total() {
     if (JSON.parse(sessionStorage.getItem('login'))) {
