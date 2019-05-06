@@ -34,7 +34,6 @@ export class NavComponent implements OnInit {
       console.log(error);
     });
   }
-  
   toggleNavbar() {
     this.navbarShow = !this.navbarShow;
   }

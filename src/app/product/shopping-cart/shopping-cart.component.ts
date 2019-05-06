@@ -35,6 +35,9 @@ export class ShoppingCartComponent implements OnInit {
     } else {
       this.localImageUrlView = false;
       this.shopModel = JSON.parse(sessionStorage.getItem('cart')) || [];
+      this.shopModel.forEach((val) => {
+          val.showDiv = false;
+      });
       this.total();
     }
   }
@@ -112,28 +115,30 @@ export class ShoppingCartComponent implements OnInit {
     });
     this.router.navigate(['home/welcome']);
   }
-  actionLocalMinus(item, moq)   {
+  actionLocalMinus(item, moq, pack)   {
    /*  item.pack--;
     if (item.set === 0) {
       this.removeLocalCart(item);
     } */
-    const check = item.pack--;
-    if ( check > moq ) {
+    if (  moq < pack  ) {
       item.pack--;
       sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
       this.total();
     } else {
       this.shopModel.forEach((val) => {
-        if (val.productId === item) {
-          val.showCondtion = true;
+        if (val.productId === item.productId) {
+          val.showDiv = true;
         } else {
-          val.showCondtion = false;
+          val.showDiv = false;
         }
       });
     }
   }
   actionLocalPlus(item) {
     item.pack++;
+    this.shopModel.forEach((val) => {
+        val.showDiv = false;
+    });
     sessionStorage.setItem('cart', JSON.stringify(this.shopModel));
     this.total();
   }
