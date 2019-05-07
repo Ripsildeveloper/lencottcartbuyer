@@ -119,7 +119,7 @@ export class PlaceOrderComponent implements OnInit {
       console.log(error);
     });
   }
-  addAddress() {
+  addAddressEvent() {
     this.addressService.openAddress().subscribe(
       res => {
         if (res) {

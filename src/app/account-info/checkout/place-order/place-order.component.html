@@ -1,7 +1,7 @@
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-horizontal-stepper #stepper>
   <mat-step>
     <ng-template matStepLabel>Delivery Address</ng-template>
-    <app-all-address [addressModel]="addressModel" (addAddress)="addAddress($event)" 
+    <app-all-address [addressModel]="addressModel" (addAddress)="addAddressEvent()" 
     (editAddress)="editAddress($event)"
     (deleteAddress)="deleteData($event)" 
     (selectAddress)="selectedAddress($event)"></app-all-address>
@@ -20,7 +20,8 @@
   <mat-step>
     <ng-template matStepLabel>Confirm</ng-template>
     <div *ngIf="shopModel.length !== 0">
-      <app-confirm [totalItems]="totalItems" [addressSelected]="addressSelected" [subTotal]="subTotal"
+      <app-confirm [totalItems]="totalItems" [addressSelected]="addressSelected" 
+      [subTotal]="subTotal"
         (confirmDetails)="confirmOrderData($event)"></app-confirm>
     </div>
     <div>

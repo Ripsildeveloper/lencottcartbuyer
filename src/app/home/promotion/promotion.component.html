@@ -1,7 +1,7 @@
 <h2 class="heading"><span>{{promotionsModel.promotionTitle}}</span></h2>
 <div class="container">
   <div class="row">
-    <div class="col-md-3 col-6" *ngFor="let data of promotionsModel.joinedtable">
+    <div class="col-md-3 col-6" *ngFor="let data of promotionsModel?.joinedtable">
       <div class="imageDiv">
         <img [src]="data.productImageName[0]"
          class="imageSize img-fluid">

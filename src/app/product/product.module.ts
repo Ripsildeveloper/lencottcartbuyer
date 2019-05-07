@@ -39,13 +39,14 @@ import { ViewSingleProductComponent } from './view-single-product/view-single-pr
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailViewComponent } from './product-detail-view/product-detail-view.component';
 import { ProductDetailComponent} from './product-detail/product-detail.component';
+import { ProductFilterComponent } from './product-filter/product-filter.component';
 import { ShoppingCartComponent} from './shopping-cart/shopping-cart.component';
 import { PriceSummaryComponent } from './price-summary/price-summary.component';
 
 @NgModule({
   declarations: [ViewProductsComponent, ViewSingleProductComponent,
     ProductListComponent, ProductDetailViewComponent,
-     ProductDetailComponent, ShoppingCartComponent, PriceSummaryComponent],
+     ProductDetailComponent, ShoppingCartComponent, PriceSummaryComponent, ProductFilterComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,

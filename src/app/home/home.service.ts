@@ -31,7 +31,7 @@ export class HomeService {
   getFooterDetails(): Observable<any> {
     const categoryUrl = 'footerDetails';
     const url: string = this.serviceUrl + categoryUrl;
-    return this.httpClient.get<Footer>(url);
+    return this.httpClient.get<Footer[]>(url);
   }
 
   // get hot products

@@ -8,7 +8,7 @@ import {HomeService} from '../home.service';
 })
 export class FooterComponent implements OnInit {
 
-  footerDetails: Footer;
+  footerDetails: Footer[];
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
@@ -17,7 +17,6 @@ export class FooterComponent implements OnInit {
     allFooter() {
       this.homeService.getFooterDetails().subscribe(data => {
         this.footerDetails = data;
-        console.log(data);
       }, error => {
         console.log(error);
       });

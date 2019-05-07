@@ -4,7 +4,7 @@
       <div class="col-xs-12 col-sm-6 col-md-6 " *ngFor="let data of footerDetails">
 
         <div>
-          <img [src]="data.logoImageName" style="width:180px"
+          <img [src]="data?.logoImageName" style="width:180px"
            alt="Logo" class="img-fluid">
         </div>
         <div class="footers-info mt-3">
@@ -12,16 +12,16 @@
             <li>
               <a href="maintenance.html">
                 <span>
-                  <i class="fa fa-phone" aria-hidden="true">{{data.address}}</i>
+                  <i class="fa fa-phone" aria-hidden="true">{{data?.address}}</i>
                 </span>
               </a>
             </li>
             <li><a href="contact.html">
-                <i class="fa fa-phone" aria-hidden="true">{{data.contactNo}}</i>
+                <i class="fa fa-phone" aria-hidden="true">{{data?.contactNo}}</i>
               </a>
             </li>
             <li><a href="about.html"><span><i class="fa fa-envelope" aria-hidden="true">
-              {{data.emailId}}
+              {{data?.emailId}}
             </i></span></a>
             </li>
           </ul>
@@ -46,7 +46,7 @@
       <div class="col-xs-12 col-6 col-md-2">
         <h6>Social Media </h6>
         <ul class="list-unstyled">
-          <li>
+        <!--   <li>
             <a class="pr-2" [attr.href]="data?.facebookLink" target="_blank"><i
                 class="fa fa-facebook-square fa-2x social"></i></a>
             <a class="pr-2" [attr.href]="data?.googlePlusLink" target="_blank"><i
@@ -54,7 +54,7 @@
             <a class="pr-2" [attr.href]="data?.twitterLink" target="_blank"><i
                 class="fa fa-google-plus-square fa-2x social"></i></a>
             <a class="pr-2" [attr.href]="data?.pintrestLink" target="_blank"><i class="fa fa-pinterest  fa-2x social"></i></a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>

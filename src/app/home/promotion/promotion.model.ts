@@ -5,4 +5,5 @@ export class  Promotion {
     productId: [{
         id: string;
     }];
+    joinedtable: any;
 }
