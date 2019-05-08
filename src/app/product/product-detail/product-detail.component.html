@@ -6,14 +6,16 @@
   </div>
   <div class="col-sm-6  productDiscription">
     <h3>{{productModel?.productName}}</h3>
+    <span>{{productModel?.productDescription}}</span>
     <div class="rating col-sm-10">
       <span class="labelStock" [ngClass]="displayClass">{{stockItemStatus}}</span>
     </div>
     <div class="productPrice">
       <h4><span>&#x20B9;</span> {{productModel?.price}}</h4>
+      <h6 class="text-dark">{{productModel?.color}}</h6>
     </div>
     <div class="form-group">
-      <h6>minimum order: {{productModel?.moq}}</h6>
+      <h6 >minimum order: {{productModel?.moq}}</h6>
       <h6>1 pack = {{packSum}} piece</h6>
     </div>
     <div class="form-group">

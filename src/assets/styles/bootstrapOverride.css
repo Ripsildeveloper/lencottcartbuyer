@@ -19,6 +19,26 @@
   height: 40px !important;
 }
 
+.subHeader strong {
+  color: #333;
+  margin: auto auto auto 0;
+  display: inline-flex;
+  white-space: nowrap;
+  font-weight: 500;
+  padding-right: 10px;
+  text-overflow: ellipsis;
+}
+.subHeader {
+  position: relative;
+  display: flex;
+}
+.subHeader span {
+  height: 1px;
+  border-top: 2px solid #dadada;
+  width: 100%;
+  margin: auto 0 auto auto;
+  display: inline-flex;
+}
 .dropdown-menu {
   transform: scale(1);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
@@ -68,4 +88,9 @@
 
 .navText {
   color: black;
+}
+
+.imgResponsive {
+  width: 100%;
+  height: auto;
 }

@@ -79,16 +79,14 @@
             </div>
           </nav>
         </div>
-        <div class="row" style="cursor: pointer">
-          <div class="col-md-3 col-6" *ngFor="let product of productModel" (click)="viewSingleProduct(product._id)">
+        <div class="row " style="cursor: pointer">
+          <div class="col-md-3 col-6 mb-5" *ngFor="let product of productModel" (click)="viewSingleProduct(product._id)">
             <a class="product">
               <img [src]="product.productImageName[0]">
             </a>
             <div>
               <p>{{ product.productName }}</p>
-              <p><b>&#x20a8; {{ product.price }}</b></p>
-
-
+              <p><b><span>&#x20B9;</span> {{ product.price }}</b></p>
 
               Size: <span *ngFor="let size of product?.size">{{size.sizeName}} </span>
             </div>
