@@ -10,16 +10,42 @@ import { HotProduct } from './../hot-product/hot-product.model';
 })
 export class HomeComponent implements OnInit {
   banner: Banner[];
-  promotion: Promotion;
+  promotion: Promotion[];
+  promotionTable: Promotion[];
   hotProduct: HotProduct;
   slideIndex = 0;
+  displayClass: string;
+  slideMultiStart = 0;
+  slideMultiEnd  = 2;
+  slide = { slideMultiStart: 0,
+    slideMultiEnd: 2 };
+  sliderLength: number;
+  slideMultiLength: number;
+
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
     this.allBanner();
-    this.allPromotion();
     this.allHotProduct();
+    this.allPromotion();
   }
+
+
+  plusMultiCarousel(slide)   {
+    this.slideMultiStart = this.slideMultiStart + 1;
+    /* this.slideMultiEnd = slide.slideMultiEnd; */
+    this.slideMultiLength = slide.slideMultiEnd;
+    const part = this.promotion.slice(slide.slideMultiStart, slide.slideMultiEnd);
+    this.promotionTable = part;
+  }
+  minusMultiCarousel(slide)   {
+    this.slideMultiStart = slide.slideMultiStart + 1;
+    /* this.slideMultiEnd = slide.slideMultiEnd; */
+    this.slideMultiLength = slide.slideMultiEnd;
+    const part = this.promotion.slice(slide.slideMultiStart, slide.slideMultiEnd);
+    this.promotionTable = part;
+  }
+
   allBanner() {
     this.homeService.getAllBanner().subscribe(data => {
       this.banner = data;
@@ -45,6 +71,10 @@ export class HomeComponent implements OnInit {
   allPromotion() {
     this.homeService.getAllPromotion().subscribe(data => {
       this.promotion = data;
+      console.log(this.promotion);
+      this.promotion  = this.promotion[0].joinedtable;
+      this.sliderLength = this.promotion.length;
+      this.plusMultiCarousel(this.slide);
     }, error => {
       console.log(error);
     });

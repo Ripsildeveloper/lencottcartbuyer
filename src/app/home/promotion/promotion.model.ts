@@ -6,4 +6,5 @@ export class  Promotion {
         id: string;
     }];
     joinedtable: any;
+    displayClass: string;
 }
