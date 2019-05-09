@@ -16,9 +16,9 @@ export class HomeComponent implements OnInit {
   slideIndex = 0;
   displayClass: string;
   slideMultiStart = 0;
-  slideMultiEnd  = 2;
+  slideMultiEnd  = 4;
   slide = { slideMultiStart: 0,
-    slideMultiEnd: 2 };
+    slideMultiEnd: 4 };
   sliderLength: number;
   slideMultiLength: number;
 
